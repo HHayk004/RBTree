@@ -1,0 +1,15 @@
+RBTree's properties:
+1) Each node is either black or red
+2) The root node is black
+3) The NILL node is black
+4) no adjacent red nodes
+5) From each node every simple path has equal number of black nodes
+
+bh(x) -> black node height
+bh(x) >= h(x) / 2
+
+Black nodes count >= red nodes count for every subtree
+
+Every subtre rooted at x has at least 2^bh(x) - 1 (proof with math induction theorem)
+
+h(root) <= 2*log(n + 1)
