@@ -17,6 +17,7 @@ RBTree<T>::RBTree(const std::initializer_list<T>& list) : nil(new Node(T(), null
 template <typename T>
 RBTree<T>::~RBTree()
 {
+    delete nil;
     clear();
 }
 
@@ -29,7 +30,7 @@ void RBTree<T>::clear()
 template <typename T>
 void RBTree<T>::clearRec(Node* node)
 {
-    if (node)
+    if (node != nil)
     {
         clearRec(node->left);
         clearRec(node->right);
@@ -109,7 +110,7 @@ void RBTree<T>::rightRotate(Node* x)
 template <typename T>
 void RBTree<T>::insert(const T& val)
 {
-    Node new_node = new Node(val, nil, nil, nil, ColorType::RED);
+    Node* new_node = new Node(val, nil, nil, nil, ColorType::RED);
     Node* prev = nil;
     Node* node = root;
     while (node != nil)
@@ -131,12 +132,12 @@ void RBTree<T>::insert(const T& val)
         }
     }
 
-    if (node == nil)
+    if (prev == nil)
     {
         root = new_node;
     }
 
-    else if (node->val > val)
+    else if (prev->val > val)
     {
         prev->left = new_node;
     }
@@ -146,6 +147,7 @@ void RBTree<T>::insert(const T& val)
         prev->right = new_node;
     }
 
+    new_node->parent = prev;
     insertFixUp(new_node);
 }
 
@@ -215,7 +217,7 @@ void RBTree<T>::printTree() const // printing tree (levelOrder + endl + nullptr 
 	int n = 1; // level nodes count
 	bool check = false; // check for not nullptr nodes
 	std::queue<Node*> roots; // same mean as in level order
-	if (root) // if tree isn't empty, push m_root to roots and initialize count
+	if (root != nil) // if tree isn't empty, push m_root to roots and initialize count
 	{
         std::cout << ":";
 		roots.push(root);
@@ -225,9 +227,9 @@ void RBTree<T>::printTree() const // printing tree (levelOrder + endl + nullptr 
 	while (count) // cycle while there are valid nodes
 	{
 		Node* root = roots.front(); // root to roots first value
-		if (root) // if root is valid
+		if (root != nil) // if root is valid
 		{
-			check |= (root->left || root->right); // for finding valid node
+			check |= (root->left != nil || root->right != nil); // for finding valid node
 			roots.push(root->left); // pushing the nodes
 			roots.push(root->right);
 
@@ -246,8 +248,8 @@ void RBTree<T>::printTree() const // printing tree (levelOrder + endl + nullptr 
 
 		else // printing ' '
 		{
-			roots.push(nullptr); // for printing tree in appropriate way
-			roots.push(nullptr);
+			roots.push(nil); // for printing tree in appropriate way
+			roots.push(nil);
 			std::cout << " :";
 		}
 
