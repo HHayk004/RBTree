@@ -1,0 +1,60 @@
+# Ignore the .vscode directory
+.vscode/
+
+# Ignore build directories
+build/
+cmake-build-debug/
+cmake-build-release/
+Debug/
+Release/
+x64/Debug/
+x64/Release/
+
+# Ignore temporary files
+*.tmp
+*.temp
+*.log
+
+# Ignore compiled object files
+*.o
+*.obj
+
+# Ignore compiled static and dynamic libraries
+*.lib
+*.a
+*.la
+*.lo
+*.def
+*.dll
+*.dylib
+*.so
+
+# Ignore compiled executables
+*.exe
+*.out
+*.app
+
+# Ignore system-specific files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore test coverage reports
+coverage/
+
+# Ignore Visual Studio files
+*.VC.db
+*.VC.VC.opendb
+
+# Ignore dependency directories
+dependencies/
+
+*.cpp
