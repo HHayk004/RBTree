@@ -57,5 +57,4 @@ coverage/
 # Ignore dependency directories
 dependencies/
 
-test.cpp
-test
+./test
