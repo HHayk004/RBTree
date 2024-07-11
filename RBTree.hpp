@@ -211,6 +211,89 @@ void RBTree<T>::insertFixUp(Node* node)
 }
 
 template <typename T>
+void RBTree<T>::transplant(Node* u, Node* v)
+{
+    if (u->parent == nil)
+    {
+        root = v;
+    }
+
+    else if (u == u->parent->left)
+    {
+        u->parent->left = v;
+    }
+
+    v->parent = u->parent;
+}
+
+template <typename T>
+void RBTree<T>::delete(const T& val)
+{
+    Node* z = root;
+
+    while (z != nil && z->val != val)
+    {
+        if (z->val > val)
+        {
+            z = z->left;
+        }
+
+        else
+        {
+            z = z->right;
+        }
+    }
+
+    if (z != nil)
+    {
+        Node* y = z;
+        ColorType y_org_color = y->color;
+        Node* x = nil;
+
+        if (z->left == nil)
+        {
+            x = z->right;
+            transplant(z, z->right);
+        }
+
+        else if (z->right == nil)
+        {
+            x = z->left;
+            transplant(z, z->left);
+        }
+
+        else
+        {
+            y = getMin(z->right);
+            y_org_color = y->color;
+            x = y->right;
+        
+            if (y->parent == z)
+            {
+                x->parent = z;
+            }
+
+            else
+            {
+                transplant(y, y->right);
+                y->right = z->right;
+                y->right->parent = y;
+            }
+
+            transplant(z, y);
+            y->left = z->left;
+            y->left->parent = y;
+            y->color = z->color;
+    
+            if (y_org_color == ColorType::BlACK)
+            {
+                deleteFixUp(x);
+            }
+        }
+    }
+}
+
+template <typename T>
 void RBTree<T>::printTree() const // printing tree (levelOrder + endl + nullptr nodes)
 {
 	int count = 0; // current count of nodes

@@ -27,11 +27,17 @@ private:
 
 private:
     void leftRotate(Node* node);
-    void rightRotate(Node* node); //
+    void rightRotate(Node* node);
 
     void clearRec(Node* node);
 
-    void insertFixUp(Node* node); //
+    void insertFixUp(Node* node);
+
+    void transplant(Node* u, Node* v);
+
+    void deleteFixUp(Node* node); //
+
+    void delete(Node* z);
 
 public:
     RBTree();
@@ -41,7 +47,12 @@ public:
 
     void clear();
 
-    void insert(const T& val); // simple insert at beginning
+    void insert(const T& val);
+
+    void delete(const T& val); //
+
+    Node* getMin(Node* node) const; //
+    Node* getMax(Node* node) const; //
 
     void printTree() const;
 
