@@ -223,14 +223,18 @@ void RBTree<T>::transplant(Node* u, Node* v)
         u->parent->left = v;
     }
 
+    else
+    {
+        u->parent->right = v;
+    }
+
     v->parent = u->parent;
 }
 
 template <typename T>
-void RBTree<T>::delete(const T& val)
+void RBTree<T>::deleteNode(const T& val)
 {
     Node* z = root;
-
     while (z != nil && z->val != val)
     {
         if (z->val > val)
@@ -243,6 +247,7 @@ void RBTree<T>::delete(const T& val)
             z = z->right;
         }
     }
+
 
     if (z != nil)
     {
@@ -270,7 +275,7 @@ void RBTree<T>::delete(const T& val)
         
             if (y->parent == z)
             {
-                x->parent = z;
+                x->parent = y;
             }
 
             else
@@ -285,12 +290,113 @@ void RBTree<T>::delete(const T& val)
             y->left->parent = y;
             y->color = z->color;
     
-            if (y_org_color == ColorType::BlACK)
+            if (y_org_color == ColorType::BLACK)
             {
                 deleteFixUp(x);
             }
         }
     }
+}
+
+template <typename T>
+void RBTree<T>::deleteFixUp(Node* x)
+{
+    while (x != root && x->color == ColorType::BLACK)
+    {
+        if (x == x->parent->left)
+        {
+            Node* w = x->parent->right;
+            if (w->color == ColorType::RED)
+            {
+                w->color = ColorType::BLACK;
+                x->parent->color = ColorType::RED;
+                leftRotate(x->parent);
+                w = x->parent->right;
+            }
+
+            if (w->left->color == ColorType::BLACK && w->right->color == ColorType::BLACK)
+            {
+                w->color = ColorType::RED;
+                x = x->parent;
+            }
+
+            else
+            {
+                if (w->right->color == ColorType::BLACK)
+                {
+                    w->left->color = ColorType::BLACK;
+                    w->color = ColorType::RED;
+                    rightRotate(w);
+                    w = x->parent->right;
+                }
+
+                w->color = x->parent->color;
+                x->parent->color = ColorType::BLACK;
+                w->right->color = ColorType::BLACK;
+                leftRotate(x->parent);
+                x = root;
+            }
+        }
+
+        else
+        {
+            Node* w = x->parent->left;
+            if (w->color == ColorType::RED)
+            {
+                w->color = ColorType::BLACK;
+                x->parent->color = ColorType::RED;
+                rightRotate(x->parent);
+                w = x->parent->left;
+            }
+
+            if (w->left->color == ColorType::BLACK && w->right->color == ColorType::BLACK)
+            {
+                w->color = ColorType::RED;
+                x = x->parent;
+            }
+
+            else
+            {
+                if (w->left->color == ColorType::BLACK)
+                {
+                    w->left->color = ColorType::BLACK;
+                    w->color = ColorType::RED;
+                    leftRotate(w);
+                    w = x->parent->left;
+                }
+
+                w->color = x->parent->color;
+                x->parent->color = ColorType::BLACK;
+                w->left->color = ColorType::BLACK;
+                rightRotate(x->parent);
+                x = root;
+            }
+        }
+    }
+
+    x->color = ColorType::BLACK;
+}
+
+template <typename T>
+typename RBTree<T>::Node* RBTree<T>::getMin(Node* node) const
+{
+    while (node->left != nil)
+    {
+        node = node->left;
+    }
+
+    return node;
+}
+
+template <typename T>
+typename RBTree<T>::Node* RBTree<T>::getMax(Node* node) const
+{
+    while (node->right != nil)
+    {
+        node = node->right;
+    }
+
+    return node;
 }
 
 template <typename T>

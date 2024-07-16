@@ -35,9 +35,7 @@ private:
 
     void transplant(Node* u, Node* v);
 
-    void deleteFixUp(Node* node); //
-
-    void delete(Node* z);
+    void deleteFixUp(Node* node);
 
 public:
     RBTree();
@@ -49,10 +47,10 @@ public:
 
     void insert(const T& val);
 
-    void delete(const T& val); //
+    void deleteNode(const T& val);
 
-    Node* getMin(Node* node) const; //
-    Node* getMax(Node* node) const; //
+    Node* getMin(Node* node) const;
+    Node* getMax(Node* node) const;
 
     void printTree() const;
 
